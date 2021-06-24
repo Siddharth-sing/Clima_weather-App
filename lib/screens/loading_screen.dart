@@ -18,12 +18,11 @@ class _LoadingScreenState extends State<LoadingScreen> {
   }
 
   void getLocationData() async {
-    var weatherData = await WeatherModel().getLocationWeather();
+
+    var weatherData = await WeatherModel().getLocationWeather(); /* This is await because unless this have not any value Navigator wont work*/
 
     Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return LocationScreen(
-        locationWeather: weatherData,
-      );
+      return LocationScreen(locationWeather: weatherData,);
     }));
   }
 

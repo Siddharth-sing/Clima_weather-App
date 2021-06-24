@@ -14,7 +14,6 @@ class LocationScreen extends StatefulWidget {
 
 class _LocationScreenState extends State<LocationScreen> {
   WeatherModel weather = WeatherModel();
-
   int temperature;
   String weatherIcon;
   String cityName;
@@ -29,13 +28,16 @@ class _LocationScreenState extends State<LocationScreen> {
 
   void updateUI(dynamic weatherData) {
     setState(() {
-      if (weatherData == null) {
+      if (weatherData == null) {// to check whether any casuality happen
         temperature = 0;
         weatherIcon = 'Error';
         weatherMessage = 'Unable to get weather data';
         cityName = '';
         return;
       }
+      print(weatherData['coord']['lon']);
+      print(weatherData['coord']['lat']);
+      print(weatherData['name']);
       double temp = weatherData['main']['temp'];
       temperature = temp.toInt();
       var condition = weatherData['weather'][0]['id'];
@@ -68,7 +70,7 @@ class _LocationScreenState extends State<LocationScreen> {
                 children: <Widget>[
                   FlatButton(
                     onPressed: () async {
-                      var weatherData = await weather.getLocationWeather();
+                      var weatherData = await weather.getLocationWeather(); /* Again it is a future value we cant go further till the weather reports not comes therefore we applied await here*/
                       updateUI(weatherData);
                     },
                     child: Icon(
@@ -78,7 +80,7 @@ class _LocationScreenState extends State<LocationScreen> {
                   ),
                   FlatButton(
                     onPressed: () async {
-                      var typedName = await Navigator.push(
+                      var typedName = await Navigator.push( // ye flutter ka intent hai
                         context,
                         MaterialPageRoute(
                           builder: (context) {
@@ -87,8 +89,7 @@ class _LocationScreenState extends State<LocationScreen> {
                         ),
                       );
                       if (typedName != null) {
-                        var weatherData =
-                        await weather.getCityWeather(typedName);
+                        var weatherData = await weather.getCityWeather(typedName);
                         updateUI(weatherData);
                       }
                     },
